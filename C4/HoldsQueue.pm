@@ -126,13 +126,15 @@ Returns hold queue for a holding branch. If branch is omitted, then whole queue 
 
 sub GetHoldsQueueItems {
     my $params = shift;
-    my $dbh   = C4::Context->dbh;
+    my $dbh    = C4::Context->dbh;
 
     my $search_params;
-    $search_params->{'me.holdingbranch'} = $params->{branchlimit} if $params->{branchlimit};
-    $search_params->{'itype'} = $params->{itemtypeslimit} if $params->{itemtypeslimit};
-    $search_params->{'ccode'} = $params->{ccodeslimit} if $params->{ccodeslimit};
-    $search_params->{'location'} = $params->{locationslimit} if $params->{locationslimit};
+    $search_params->{'me.holdingbranch'} = $params->{branchlimit}    if $params->{branchlimit};
+    $search_params->{'itype'}            = $params->{itemtypeslimit} if $params->{itemtypeslimit};
+    $search_params->{'ccode'}            = $params->{ccodeslimit}    if $params->{ccodeslimit};
+    $search_params->{'location'}         = $params->{locationslimit} if $params->{locationslimit};
+    my $rows = $params->{limit} || 20;
+    my $page = $params->{page}  || 1;
 
     my $results = Koha::Hold::HoldsQueueItems->search(
         $search_params,
@@ -143,20 +145,35 @@ sub GetHoldsQueueItems {
             prefetch => [
                 'biblio',
                 'biblioitem',
-                {
-                    'item' => {
-                        'item_group_item' => 'item_group'
-                    }
-                }
+                { 'item' => { 'item_group_item' => 'item_group' } }
+            ],
+            order_by => [
+                'ccode',        'location',   'item.cn_sort', 'author',
+                'biblio.title', 'pickbranch', 'reservedate'
+            ],
+            rows => $rows,
+            page => $page
+        }
+    );
+    my $total_results = Koha::Hold::HoldsQueueItems->search(
+        $search_params,
+        {
+            join => [
+                'borrower',
+            ],
+            prefetch => [
+                'biblio',
+                'biblioitem',
+                { 'item' => { 'item_group_item' => 'item_group' } }
             ],
             order_by => [
                 'ccode',        'location',   'item.cn_sort', 'author',
                 'biblio.title', 'pickbranch', 'reservedate'
             ],
         }
-    );
+    )->count;
 
-    return $results;
+    return ( $results, $total_results );
 }
 
 =head2 CreateQueue
