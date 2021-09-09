@@ -191,7 +191,6 @@ Depends: ${misc:Depends}, ${koha:Depends},
  mysql-client | virtual-mysql-client,
  perl-doc,
  pwgen,
- rabbitmq-server,
  sudo,
  fonts-dejavu | ttf-dejavu,
  unzip,
@@ -200,6 +199,7 @@ Depends: ${misc:Depends}, ${koha:Depends},
  yaz
 Suggests: mysql-server | virtual-mysql-server,
  letsencrypt,
+ rabbitmq-server,
 Homepage: http://koha-community.org/
 Description: integrated (physical) library management system
  Koha is an Integrated Library Management system for real-world libraries
@@ -239,7 +239,6 @@ Depends: ${misc:Depends},
  mysql-server | virtual-mysql-server,
  perl-doc,
  pwgen,
- rabbitmq-server,
  sudo,
  fonts-dejavu | ttf-dejavu,
  unzip,
