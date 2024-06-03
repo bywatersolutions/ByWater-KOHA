@@ -85,6 +85,10 @@ jobs:
 
             - name: Run tests
               run: |
+                  docker compose pull
+                  docker run --name koha-temp koha/koha-testing:main cpanm Struct::Diff
+                  CONTAINER_ID=$(docker ps -aqf "name=koha-temp")
+                  docker container commit $CONTAINER_ID koha/koha-testing:main
                   docker compose -f docker-compose.es7.yml -f docker-compose.yml -p koha up --abort-on-container-exit --no-color
                   cat $GITHUB_WORKSPACE/testing.success
 
@@ -455,6 +459,7 @@ jobs:
                   sleep 60
                   echo "3 MINUTES DONE"
                   echo "WAKING UP"
+                  docker ps
                   echo "DOCKER LOGS"
                   docker logs koha_koha_1 2>&1
                   echo "/DOCKER LOGS"
