@@ -90,7 +90,7 @@ jobs:
 
             - name: Post test cleanup
               run: |
-                  docker-compose down
+                  docker compose down
                   docker rm -f $(docker ps -a -f "name=koha-" -q)
                   docker volume prune -f
                   docker image  prune -f
@@ -445,8 +445,8 @@ jobs:
                   mkdir -p env
                   wget -O env/defaults.env https://gitlab.com/koha-community/koha-testing-docker/raw/24.05/env/defaults.env
                   cp env/defaults.env .env
-                  docker-compose pull
-                  docker-compose -f docker-compose.yml -p koha up --detach
+                  docker compose pull
+                  docker compose -f docker-compose.yml -p koha up --detach
                   echo "SLEEPING 3 MINUTES"
                   sleep 60
                   echo "1 MINUTE DONE"
@@ -456,7 +456,7 @@ jobs:
                   echo "3 MINUTES DONE"
                   echo "WAKING UP"
                   echo "DOCKER LOGS"
-                  docker logs koha_koha_1 2>&1
+                  docker logs koha-koha-1 2>&1
                   echo "/DOCKER LOGS"
 
             #    - name: Setup Debug Session
@@ -472,7 +472,7 @@ jobs:
 
             - name: Post test cleanup
               run: |
-                  docker-compose down
+                  docker compose down
                   docker rm -f $(docker ps -a -f "name=koha_" -q)
                   docker volume prune -f
                   docker image  prune -f
@@ -514,8 +514,8 @@ jobs:
                   mkdir -p env
                   wget -O env/defaults.env https://gitlab.com/koha-community/koha-testing-docker/raw/24.05/env/defaults.env
                   cp env/defaults.env .env
-                  docker-compose pull
-                  docker-compose -f docker-compose.yml -p koha up --detach
+                  docker compose pull
+                  docker compose -f docker-compose.yml -p koha up --detach
                   echo "SLEEPING 3 MINUTES"
                   sleep 60
                   echo "1 MINUTE DONE"
@@ -525,7 +525,7 @@ jobs:
                   echo "3 MINUTES DONE"
                   echo "WAKING UP"
                   echo "DOCKER LOGS"
-                  docker logs koha_koha_1 2>&1
+                  docker logs koha-koha-1 2>&1
                   echo "/DOCKER LOGS"
 
             #    - name: Setup Debug Session
@@ -541,7 +541,7 @@ jobs:
 
             - name: Post test cleanup
               run: |
-                  docker-compose down
+                  docker compose down
                   docker rm -f $(docker ps -a -f "name=koha_" -q)
                   docker volume prune -f
                   docker image  prune -f
@@ -582,8 +582,8 @@ jobs:
                   mkdir -p env
                   wget -O env/defaults.env https://gitlab.com/koha-community/koha-testing-docker/raw/24.05/env/defaults.env
                   cp env/defaults.env .env
-                  docker-compose pull
-                  docker-compose -f docker-compose.yml -p koha up --detach
+                  docker compose pull
+                  docker compose -f docker-compose.yml -p koha up --detach
                   echo "SLEEPING 3 MINUTES"
                   sleep 60
                   echo "1 MINUTE DONE"
@@ -593,7 +593,7 @@ jobs:
                   echo "3 MINUTES DONE"
                   echo "WAKING UP"
                   echo "DOCKER LOGS"
-                  docker logs koha_koha_1 2>&1
+                  docker logs koha-koha-1 2>&1
                   echo "/DOCKER LOGS"
 
             #    - name: Setup Debug Session
@@ -609,7 +609,7 @@ jobs:
 
             - name: Post test cleanup
               run: |
-                  docker-compose down
+                  docker compose down
                   docker rm -f $(docker ps -a -f "name=koha_" -q)
                   docker volume prune -f
                   docker image  prune -f
@@ -650,8 +650,8 @@ jobs:
                   mkdir -p env
                   wget -O env/defaults.env https://gitlab.com/koha-community/koha-testing-docker/raw/24.05/env/defaults.env
                   cp env/defaults.env .env
-                  docker-compose pull
-                  docker-compose -f docker-compose.yml -p koha up --detach
+                  docker compose pull
+                  docker compose -f docker-compose.yml -p koha up --detach
                   echo "SLEEPING 3 MINUTES"
                   sleep 60
                   echo "1 MINUTE DONE"
@@ -661,7 +661,7 @@ jobs:
                   echo "3 MINUTES DONE"
                   echo "WAKING UP"
                   echo "DOCKER LOGS"
-                  docker logs koha_koha_1 2>&1
+                  docker logs koha-koha-1 2>&1
                   echo "/DOCKER LOGS"
 
             #    - name: Setup Debug Session
@@ -677,8 +677,7 @@ jobs:
 
             - name: Post test cleanup
               run: |
-                  docker-compose down
-                  docker rm -f $(docker ps -a -f "name=koha_" -q)
+                  docker compose down
                   docker volume prune -f
                   docker image  prune -f
                   rm docker-compose.yml
