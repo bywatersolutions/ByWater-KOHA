@@ -524,6 +524,13 @@ my $userflags =
     ? [ 'fast_cataloging', 'edit_catalogue' ]
     : 'edit_catalogue';
 
+$frameworkcode = &GetFrameworkCode($biblionumber)
+  if ( $biblionumber and not( defined $frameworkcode) and $op ne 'cud-addbiblio' );
+
+if ($frameworkcode eq 'FA'){
+    $userflags = 'fast_cataloging';
+}
+
 my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
     {
         template_name   => "cataloguing/addbiblio.tt",
