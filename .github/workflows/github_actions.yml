@@ -64,6 +64,7 @@ jobs:
                   curl --silent "https://registry.hub.docker.com/v2/repositories/bywater/koha-ncip-server/tags?page_size=1000" | jq -r ".results[].name" | sort --version-sort | grep "v${{ steps.extracted_variables.outputs.MAJOR_MINOR_VERSION }}-latest"
 
     unit-test:
+        # Fast builds will skip unit tests and go straight to building a debian package
         if: (!contains(github.event.head_commit.message, '[FAST]')) && (github.repository == 'bywatersolutions/bywater-koha' || github.repository == 'bywatersolutions/bywater-koha-future' || github.repository == 'bywatersolutions/bywater-koha-security')
         name: Run unit tests
         needs: [check-repo]
@@ -217,6 +218,8 @@ jobs:
               if: always() # Pick up events even if the job fails or is canceled.
 
     build-debs:
+        # Fast builds will skip unit tests and go straight to building a debian package
+        # If it is fast build, we still want to honor cancellation and stop on failures
         if: ( success() || ( contains(github.event.head_commit.message, '[FAST]') && !cancelled() && !contains(needs.*.result, 'failure') ) ) && (github.repository == 'bywatersolutions/bywater-koha' || github.repository == 'bywatersolutions/bywater-koha-future' || github.repository == 'bywatersolutions/bywater-koha-security')
         name: Build Debian packages
         needs: [unit-test, is-a-mark]
@@ -352,6 +355,8 @@ jobs:
               shell: bash
 
             - name: Notify package importer
+              # If this was a fast build, we don't want to import the package into apt automatically
+              if: ( !contains(github.event.head_commit.message, '[FAST]') )
               run: curl --insecure "https://apt2.bywatersolutions.com/?tag=${{ steps.extracted_variables.outputs.TAG_NAME }}&t=${{ secrets.TOKEN }}"
               shell: bash
 
